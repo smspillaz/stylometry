@@ -13,7 +13,7 @@ DEFAULT_AUTHOR = "Unknown"
 class StyloDocument(object):
 
     def __init__(self, file_name, author=DEFAULT_AUTHOR):
-        self.doc = open(file_name, "r").read().decode(encoding='utf-8', errors='ignore')
+        self.doc = open(file_name, "rb").read().decode(encoding='utf-8', errors='ignore')
         self.author = author
         self.file_name = file_name
         self.tokens = word_tokenize(self.doc)

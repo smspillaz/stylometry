@@ -85,7 +85,7 @@ class StyloPCA(StyloClassifier):
 			evr = self.pca.explained_variance_
 		else:
 			evr = self.pca.lambdas_
-		print evr
+		print(evr)
 		fig = plt.figure()
 		ax = fig.add_subplot(111)
 		tot = sum(evr)

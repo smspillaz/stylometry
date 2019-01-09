@@ -1,6 +1,7 @@
 import os
 import csv
-from urllib2 import urlopen, URLError, HTTPError
+from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
 
 def gutenberg_mirror_download(row):
     try:

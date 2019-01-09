@@ -101,7 +101,7 @@ class StyloDecisionTree(StyloClassifier):
 		return (confusion_matrix(self.yt, self.ypred), accuracy_score(self.yt, self.ypred))
 
 	def output_image(self,path):
-		dot_data = StringIO.StringIO()
+		dot_data = StringIO()
 		export_graphviz(self.classifier, feature_names=self.cols, out_file=dot_data)
 		graph = pydot.graph_from_dot_data(dot_data.getvalue())
 		graph.write_png(path)

@@ -78,7 +78,7 @@ class StyloDecisionTree(StyloClassifier):
 			self.yr = self.data_frame.loc[self.data_frame["Author_Orig"] != unknown_author][self.pred_col].values
 
 	def fit(self,check_input=True,sample_weight=None):
-		self.classifier.fit(self.Xr,self.yr,check_input,sample_weight)
+		self.classifier.fit(self.Xr,self.yr,check_input=check_input,sample_weight=sample_weight)
 
 	def predict(self,corpus=None):
 		if not corpus:

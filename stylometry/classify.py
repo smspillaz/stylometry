@@ -104,6 +104,6 @@ class StyloDecisionTree(StyloClassifier):
 		dot_data = StringIO()
 		export_graphviz(self.classifier, feature_names=self.cols, out_file=dot_data)
 		graph = pydot.graph_from_dot_data(dot_data.getvalue())
-		graph.write_png(path)
+		return graph
 
 

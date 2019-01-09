@@ -14,8 +14,9 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
 from IPython.display import Image
-import StringIO, pydot
-from extract import StyloCorpus
+from io import StringIO
+import pydot
+from stylometry.extract import StyloCorpus
 from pkgutil import get_data
 import random
 import os

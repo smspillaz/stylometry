@@ -18,10 +18,10 @@ def gutenberg_mirror_download(row):
         with open(row['author'] + '/' + row['title'] + '.txt', "wb") as local_file:
             local_file.write(f.read())
 
-    except HTTPError, e:
-        print "HTTP Error:", e.code, url
-    except URLError, e:
-        print "URL Error:", e.reason, url
+    except HTTPError as e:
+        print("HTTP Error:", e.code, url)
+    except URLError as e:
+        print("URL Error:", e.reason, url)
 
 def gutenberg():
     with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'gutenberg_mirror.csv'),'rb') as csvfile:

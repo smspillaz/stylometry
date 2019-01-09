@@ -95,7 +95,7 @@ class StyloDecisionTree(StyloClassifier):
 			Xt = test_frame[self.cols].values
 			self.ypred = self.classifier.predict(Xt)
 		return self.ypred
-			
+
 	def confusion_matrix(self):
 		# return pd.crosstab(self.yt, self.ypred, rownames=['actual'],colnames=['prediction'])
 		return (confusion_matrix(self.yt, self.ypred), accuracy_score(self.yt, self.ypred))

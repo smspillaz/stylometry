@@ -12,7 +12,7 @@ def gutenberg_mirror_download(row):
         url = "http://mirrors.xmission.com/gutenberg/" + path
         # url = "http://www.gutenberg.org/ebooks/%d.txt.utf-8" % int(row['gutenberg_id'])
         f = urlopen(url)
-        print "downloading " + url
+        print("downloading " + url)
         if not os.path.exists(row['author']):
             os.makedirs(row['author'])
         with open(row['author'] + '/' + row['title'] + '.txt', "wb") as local_file:

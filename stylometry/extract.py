@@ -79,8 +79,7 @@ class StyloDocument(object):
             "verys": term_per_thousand('very', fdist)
         }
 
-    @classmethod
-    def csv_header(cls):
+    def csv_header(self):
         return (
             ','.join(sorted(self.props.keys()))
         )
@@ -192,7 +191,7 @@ class StyloCorpus(object):
         return documents_by_author
 
     def csv_data(self, author=None):
-        csv_data = StyloDocument.csv_header() + '\n'
+        csv_data = self.csv_header() + '\n'
         if not author:
             for a in self.documents_by_author.keys():
                 for doc in self.documents_by_author[a]:

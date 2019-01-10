@@ -23,7 +23,7 @@ import os
 
 
 class StyloClassifier(object):
-	def __init__(self,corpus,num_train=-1,num_val=-1,pred_col='Author'):
+	def __init__(self,corpus,num_train=-1,num_val=-1,pred_col='author'):
 		self.corpus = corpus
 		print("Reading corpus data...")
 		if isinstance(corpus,str):
@@ -49,13 +49,13 @@ class StyloClassifier(object):
 			self.num_val = num_val
 		if self.num_train + self.num_val != len(self.data_frame):
 			raise ValueError('num_train + num_val must equal the number of documents in your corpus.')
-		self.data_frame['Author_Orig'] = self.data_frame['Author']
-		self.data_frame['Author'] = pd.factorize(self.data_frame['Author'])[0]
+		self.data_frame['author_orig'] = self.data_frame['author']
+		self.data_frame['author'] = pd.factorize(self.data_frame['author'])[0]
 		self.pred_col = pred_col
-		self.cols = [c for c in self.data_frame.columns if c not in (self.pred_col,'Title','Author_Orig')]
+		self.cols = [c for c in self.data_frame.columns if c not in (self.pred_col,'title','author_orig')]
 
 class StyloDecisionTree(StyloClassifier):
-	def __init__(self,corpus,num_train=-1,num_val=-1,pred_col='Author',unknown_author=None,criterion='gini',splitter='best',
+	def __init__(self,corpus,num_train=-1,num_val=-1,pred_col='author',unknown_author=None,criterion='gini',splitter='best',
 		max_depth=None,max_features=None,min_samples_split=2,min_samples_leaf=1,
 		max_leaf_nodes=None,random_state=None):
 		# Create classifier
@@ -72,10 +72,10 @@ class StyloDecisionTree(StyloClassifier):
 				rs = random_state
 			self.Xr, self.Xt, self.yr, self.yt = train_test_split(self.X, self.y, train_size=self.num_train, test_size=self.num_val, random_state=rs)
 		else:
-			self.Xt = self.data_frame.loc[self.data_frame["Author_Orig"] == unknown_author][self.cols].values
-			self.Xr = self.data_frame.loc[self.data_frame["Author_Orig"] != unknown_author][self.cols].values
-			self.yt = self.data_frame.loc[self.data_frame["Author_Orig"] == unknown_author][self.pred_col].values
-			self.yr = self.data_frame.loc[self.data_frame["Author_Orig"] != unknown_author][self.pred_col].values
+			self.Xt = self.data_frame.loc[self.data_frame["author_orig"] == unknown_author][self.cols].values
+			self.Xr = self.data_frame.loc[self.data_frame["author_orig"] != unknown_author][self.cols].values
+			self.yt = self.data_frame.loc[self.data_frame["author_orig"] == unknown_author][self.pred_col].values
+			self.yr = self.data_frame.loc[self.data_frame["author_orig"] != unknown_author][self.pred_col].values
 
 	def fit(self,check_input=True,sample_weight=None):
 		self.classifier.fit(self.Xr,self.yr,check_input=check_input,sample_weight=sample_weight)
@@ -91,7 +91,7 @@ class StyloDecisionTree(StyloClassifier):
 			else:
 				raise ValueError('Must input either corpus or csv_path.')
 			test_frame = pd.read_csv(csv_file)
-			test_frame['Author'] = pd.factorize(test_frame['Author'])[0]
+			test_frame['author'] = pd.factorize(test_frame['author'])[0]
 			Xt = test_frame[self.cols].values
 			self.ypred = self.classifier.predict(Xt)
 		return self.ypred

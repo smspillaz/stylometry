@@ -204,8 +204,7 @@ class StyloCorpus(object):
                 documents_by_author[author].append(document)
         return documents_by_author
 
-    def output_csv(self, out_file, author=None):
-        print(out_file)
+    def csv_data(self, author=None):
         csv_data = StyloDocument.csv_header() + '\n'
         if not author:
             for a in self.documents_by_author.keys():
@@ -214,8 +213,13 @@ class StyloCorpus(object):
         else:
             for doc in self.documents_by_author[author]:
                 csv_data += doc.csv_output() + '\n'
+
+        return csv_data
+
+    def output_csv(self, out_file, author=None):
+        csv_data = self.csv_data()
         if out_file:
             with open(out_file,'w') as f:
                 f.write(csv_data)
         return csv_data
-            
+

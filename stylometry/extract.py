@@ -199,6 +199,19 @@ class StyloCorpus(object):
                 documents_by_author[author].append(document)
         return documents_by_author
 
+
+    def csv_header(self):
+        try:
+            first_author = list(self.documents_by_author.keys())[0]
+            first_document = self.documents_by_author[first_author][0]
+        except IndexError:
+            raise RuntimeError("Need at least one document")
+
+        return (
+            ','.join(sorted(first_document.props.keys()))
+        )
+
+
     def csv_data(self, author=None):
         csv_data = self.csv_header() + '\n'
         if not author:

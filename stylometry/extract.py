@@ -1,5 +1,6 @@
 from __future__ import division
 import csv
+import io
 import pytz
 import glob
 
@@ -33,14 +34,21 @@ def term_per_thousand(term, fdist):
     """
     return (fdist[term] * 1000) / fdist.N()
 
+
+def read_from(fileobj_or_filename):
+    try:
+        with open(fileobj_or_filename, "rb") as f:
+            return fileobj_or_filename, f.read().decode(encoding='utf-8', errors='ignore')
+    except TypeError:
+        # Assuming that we're opened in text mode
+        return getattr(fileobj_or_filename, "name", "unknown"), fileobj_or_filename.read()
+
+
 class StyloDocument(object):
 
-    def __init__(self, file_name, author=DEFAULT_AUTHOR):
-        with open(file_name, "rb") as f:
-            doc = f.read().decode(encoding='utf-8', errors='ignore')
-
+    def __init__(self, fileobj_or_filename, author=DEFAULT_AUTHOR):
+        file_name, doc = read_from(fileobj_or_filename)
         author = author
-        file_name = file_name
 
         tokens = word_tokenize(doc)
         text = Text(tokens)

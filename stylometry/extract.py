@@ -87,17 +87,18 @@ class StyloDocument(object):
             "verys": term_per_thousand('very', fdist)
         }
 
-    def csv_header(self):
-        return (
-            ','.join(sorted(self.props.keys()))
-        )
-
     def csv_output(self):
         output = io.StringIO()
         csv.writer(output).writerow([
             self.props[k] for k in sorted(self.props.keys())
         ])
         return output.getvalue().strip('\r\n')
+
+    def csv_header(self):
+        return (
+            ','.join(sorted(self.props.keys()))
+        )
+
 
     def text_output(self):
         print("##############################################")

@@ -87,7 +87,7 @@ class StyloDecisionTree(StyloClassifier):
 			if isinstance(corpus,str):
 				csv_file = corpus
 			elif isinstance(corpus,StyloCorpus):
-				csv_file = StringIO(self.corpus.csv_data())
+				csv_file = StringIO(corpus.csv_data())
 			else:
 				raise ValueError('Must input either corpus or csv_path.')
 			test_frame = pd.read_csv(csv_file)

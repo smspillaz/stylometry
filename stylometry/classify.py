@@ -80,20 +80,24 @@ class StyloDecisionTree(StyloClassifier):
 	def fit(self,check_input=True,sample_weight=None):
 		self.classifier.fit(self.Xr,self.yr,check_input=check_input,sample_weight=sample_weight)
 
+	@staticmethod
+	def data_matrix_from_stylo_corpus(corpus, cols):
+		if isinstance(corpus,str):
+			csv_file = corpus
+		if isinstance(corpus,StyloCorpus):
+			csv_file = StringIO(corpus.csv_data())
+		else:
+			raise ValueError('Must input either corpus or csv_path.')
+		test_frame = pd.read_csv(csv_file)
+		test_frame['author'] = pd.factorize(test_frame['author'])[0]
+		Xt = test_frame[cols].values
+		return Xt
+
 	def predict(self,corpus=None):
 		if not corpus:
 			self.ypred = self.classifier.predict(self.Xt)
 		else:
-			if isinstance(corpus,str):
-				csv_file = corpus
-			elif isinstance(corpus,StyloCorpus):
-				csv_file = StringIO(corpus.csv_data())
-			else:
-				raise ValueError('Must input either corpus or csv_path.')
-			test_frame = pd.read_csv(csv_file)
-			test_frame['author'] = pd.factorize(test_frame['author'])[0]
-			Xt = test_frame[self.cols].values
-			self.ypred = self.classifier.predict(Xt)
+			self.ypred = self.classifier.predict(self.data_matrix_from_stylo_corpus(corpus, self.cols))
 		return self.ypred
 
 	def confusion_matrix(self):

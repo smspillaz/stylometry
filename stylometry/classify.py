@@ -50,7 +50,7 @@ class StyloClassifier(object):
 		if self.num_train + self.num_val != len(self.data_frame):
 			raise ValueError('num_train + num_val must equal the number of documents in your corpus.')
 		self.data_frame['author_orig'] = self.data_frame['author']
-		self.data_frame['author'] = pd.factorize(self.data_frame['author'])[0]
+		self.data_frame['author'], self.label_map = pd.factorize(self.data_frame['author'])
 		self.pred_col = pred_col
 		self.cols = [c for c in self.data_frame.columns if c not in (self.pred_col,'title','author_orig')]
 

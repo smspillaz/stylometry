@@ -13,12 +13,12 @@ import random
 DEFAULT_AUTHOR = "Unknown"
 
 def type_token_ratio(text):
-    return (len(set(text)) / len(text)) * 100
+    return (len(set(text)) / (len(text) or 1)) * 100
 
 def mean_word_len(tokens):
     words = set(tokens)
     word_chars = [len(word) for word in words]
-    return sum(word_chars) /  float(len(word_chars))
+    return sum(word_chars) / float(len(word_chars) or 1)
 
 def mean_sentence_len(sentence_word_length):
     return np.mean(sentence_word_length)
@@ -32,7 +32,7 @@ def term_per_thousand(term, fdist):
     -----  = ------
       N       1000
     """
-    return (fdist[term] * 1000) / fdist.N()
+    return (fdist[term] * 1000) / (fdist.N() or 1)
 
 
 def read_from(fileobj_or_filename):
@@ -42,6 +42,19 @@ def read_from(fileobj_or_filename):
     except TypeError:
         # Assuming that we're opened in text mode
         return getattr(fileobj_or_filename, "name", "unknown"), fileobj_or_filename.read()
+
+
+def safe_mean(array):
+    if len(array):
+        return np.mean(array)
+
+    return 0
+
+def safe_std(array):
+    if len(array):
+        return np.std(array)
+
+    return 1
 
 
 class StyloDocument(object):
@@ -64,9 +77,9 @@ class StyloDocument(object):
             "title": file_name,
             "lexical_diversity": type_token_ratio(text),
             "mean_word_len": mean_word_len(tokens),
-            "mean_sentence_len": np.mean(sentence_word_length),
-            "std_sentence_len": np.mean(sentence_word_length),
-            "mean_paragraph_len": np.mean(paragraph_word_length),
+            "mean_sentence_len": safe_mean(sentence_word_length),
+            "std_sentence_len": safe_std(sentence_word_length),
+            "mean_paragraph_len": safe_mean(paragraph_word_length),
             "document_len": sum(sentence_chars),
             "commas": term_per_thousand(',', fdist),
             "semicolons": term_per_thousand(';', fdist),
